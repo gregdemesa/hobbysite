@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    Cart
+{% endblock title %}
+{% block styles %}
+<style>
+    main{
+        margin-left: 0px;
+    }
+    main a:link {
+        color:#333;
+        text-decoration:none;
+        }
+    main a:visited {
+        color:white;
+        text-decoration:none;
+        }
+    .headbar {
+        background-color: black;
+        color: #fff;
+        padding: 10px 200px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+     }
+
+    .typebar {
+        background-color: black;
+        color: #fff;
+        padding: 0px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+    }
+    .product-box {
+        background-color: lightgray;
+        box-sizing: border-box;
+        padding: 5px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+    .return {
+        background-color: black; 
+        border-color: black; 
+        border-style: solid;
+        border-radius: 10px;
+        color: white;
+        padding: 3px 3px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .return:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
+
+</style>
+{% endblock styles%}
+{% block content %}
+<h1 class = "headbar">Cart</h1>
+    {% if user.is_authenticated %}
+        <h2>Your Bought Items</h2>
+            {% for author in author_transactions %}
+                <p class = "typebar">
+                    Shop - {{ author }}
+                </p>
+                    {% for transactions in object_list %}
+                        {% if transactions.product.author.display_name == author %}
+                                <div class ="product-box">
+                                    <b> {{ transactions.product }} - Unit Price: {{ transactions.product.price }} </b>
+                                    <li>{{ transactions.quantity }} pcs</li>
+                                </div>
+                        {% endif %}
+                    {% endfor %}
+            {% endfor %}
+        <a href=/merchstore/items class="return">Return to Products List</a>
+    {% endif %}
+{% endblock content %}

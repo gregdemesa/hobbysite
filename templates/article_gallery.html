@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+    .gallery img {
+        width: 500px;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin: 10px;
+    }
+</style>
+<body>
+    <h1>Article Gallery</h1>
+    <div class="gallery">
+        {% for image_url in image_urls %}
+        <img src="{{ image_url }}" alt="Article Image" />
+        <ul>
+            Picture: {{ image_url.title }}
+        </ul>
+        <hr />
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

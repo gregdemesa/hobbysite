@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <h1>Blog</h1>
+{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style>
+
+    .content {
+        position: absolute;
+        left: 100px;
+
+        padding: 10px;
+        flex-grow: 3;
+        }
+    a {
+        color: #000000;
+        
+    }
+    p{
+
+        font-size: 15px; 
+        color: #000000;
+    }
+    li{
+        font-size: 15px; 
+        color: #000000;
+    }
+    details{
+        border-radius: 5px;
+    }
+    strong{
+        font-weight: bold;
+        font-size: large; 
+        color: #000000;
+    }
+
+    summary {
+        padding: 4px;
+        width: 250px;
+        background-color: #E8DFCA;
+        border: none;
+        box-shadow: 1px 1px 2px #bbbbbb;
+
+        border-radius: 5px;
+        border:2px solid #000000;
+}
+</style>
+{% endblock %}
+{% block content %}
+
+<section class="content">
+    <p><strong style= "font-size: 32px;">Blog Details</strong></p>
+    
+
+
+    {% if user.is_authenticated and article.author == user.profile %}
+        <form method="GET" action="{% url 'blog:blog_update' pk=article.pk %}">
+        <button type="submit" style='background-color: #E8DFCA;color: #000000; border:2px solid #000000;border-radius: 5px;'><h4>Edit Blog</h4></button>
+    </form>
+    {% endif %}
+
+    <a href= "/blog/articles"><button style="background-color: #E8DFCA;color: #000000; border:2px solid #000000;border-radius: 5px;">Back to Categories</button> </a>
+
+    <p style="font-size: x-large;"><strong>Category:</strong> {{ article.category }}</p>
+
+
+    <ul>
+        <p style='text-align: center; font-weight:bold; font-size: xxx-large; color: #000000' >{{ article.title }}</p>
+        {% if article.header_image %}
+            <p style='text-align: center;'><img src="{{ article.header_image.url }}" ></p>
+        {% endif %}
+        <br>
+        <strong>Entry:</strong><p style="text-align: center; background-color: #E8DFCA; border-radius: 5px; padding: 15px;width: 800px;">{{ article.entry }}</p>
+            <details>
+                <summary><strong>Created/Update On</strong></summary>
+
+                <p><strong style='font-size: medium;'>Created On: </strong>{{ article.created_on }}
+                <br><strong style='font-size: medium;'>Updated On:</strong>{{ article.updated_on }}</p>
+        </details>
+    </ul>
+
+
+    <h4>Similar blogs to "{{ article.category }}"</h4>
+    <ul>
+        {% for related_article in article.category.category.all %}
+            {% if related_article.pk != article.pk %}
+                <li><a href="{{ related_article.get_absolute_url }}">{{ related_article.title }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background-color: #E8DFCA;color: #000000; border:2px solid #000000;border-radius: 5px;">Add Comment</button>
+    </form>
+    {% endif %}
+
+    <p><strong>Comments:</strong></p>
+    {% for comment in article.article.all %}
+            <li>{{comment.created_on}} {{ comment.author.display_name }} said: {{ comment.entry }}
+            </li><br>
+    {% endfor %} 
+    <br><br><br>
+</section>
+{% endblock %}
+
+<!-- article.comment_set.all -->

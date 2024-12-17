@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}Create new commission {% endblock %}
+{% block content %}
+<style>
+    .container-custom {
+        background-color: #333;
+        color:antiquewhite;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        border: 1px solid #ced4da;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px 15px;
+        width: 100%;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    h2,
+    label {
+        color: antiquewhite;
+    }
+    .btn{
+        margin-top: 20px;
+    }
+    .btn-color {
+        background-color: antiquewhite;
+        color: #333;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .btn-color:hover {
+        background-color: #333;
+        color: antiquewhite;
+        border: 1px solid antiquewhite;
+    }
+</style>
+
+<div class="container mt-5 container-custom">
+    <h2>Create Commission and Job</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-control" id="status" name="status" required>
+                <option value="Full">Full</option>
+                <option value="Completed">Completed</option>
+                <option value="Discontinued">Discontinued</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="role" class="form-label">Role</label>
+            <input type="text" class="form-control" id="role" name="role" required>
+        </div>
+        <div class="form-group">
+            <label for="manpower_required" class="form-label">Manpower Required</label>
+            <input type="number" class="form-control" id="manpower_required" name="manpower_required" required>
+        </div>
+        <button type="submit" class="btn btn-color">Submit</button>
+    </form>
+</div>
+{% endblock %}

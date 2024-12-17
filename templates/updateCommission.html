@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}Update Commission and Jobs{% endblock %}
+{% block content %}
+<style>
+    .container-custom {
+        background-color: #333;
+        color:antiquewhite;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+        border: 1px solid #ced4da;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px 15px;
+        width: 100%;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    h2,
+    label {
+        color: antiquewhite;
+    }
+    .btn{
+        margin-top: 20px;
+    }
+    .btn-color {
+        background-color: antiquewhite;
+        color: #333;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .btn-color:hover {
+        background-color: #333;
+        color: antiquewhite;
+        border: 1px solid antiquewhite;
+    }
+</style>
+
+<div class="container mt-5 container-custom">
+    <h2>Update Commission and Job</h2>
+    <form method="POST" action="{% url 'commissions:commission_edit' pk=form.instance.pk %}">
+        {% csrf_token %}
+        {{ form.as_p }} {# Render commission form fields #}
+        <table>
+            {% for form in job_formset %}
+            {{ form.as_table }}
+            {% endfor %}
+        </table>
+        <button type="submit" class="btn btn-color">Update</button>
+    </form>
+</div>
+{% endblock %}

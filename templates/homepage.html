@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <h1>Blog</h1>
+{% endblock title %}
+{% block styles %}
+<style>
+   .hero-section {
+    padding: 100px 0;
+    background-color: antiquewhite;
+    border:1px solid #000000;
+    border-radius: 5px;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    }
+
+    .hero-heading {
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 20px;
+    }
+
+    .hero-subtext {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+    }
+
+    .hero-section .btn-primary {
+        background-color: #333;
+        color: antiquewhite;
+        border:1px solid #333;
+    }
+
+    .hero-section .btn-primary:hover {
+        background-color:antiquewhite;
+        color: #333;
+        border:1px solid #333;
+    }
+    .container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    }
+
+    
+</style>
+{% endblock %}
+{% block content %}
+<section class="hero-section">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-center">
+        <h1 class="hero-heading fw-bold mb-2">Welcome to Our Hobby Site</h1>
+        <p class="hero-subtext">This is a simple homepage created using Bootstrap and CSS.</p>
+        </div>
+    </div>
+    </div>
+    </section>
+{% endblock %}

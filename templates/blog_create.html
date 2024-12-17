@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style>
+    body {
+        background-color: #F5EFE6;
+    }
+</style>
+{% extends "base.html" %} {% block content %}
+<h1 style="color: #000000;">Create Blog</h1>
+<form method="post" enctype="multipart/form-data" style="width:350; background-color: #E8DFCA;color: #000000; border:2px solid #000000;border-radius: 5px;">
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit" value="Create">Create Article</button>
+</form>
+
+{% endblock content %}
+

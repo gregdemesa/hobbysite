@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Wiki List{% endblock %}
+{% block styles %}
+<style>
+    .content-box {
+        background-color: antiquewhite;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        padding: 20px; /* Increased padding for more space */
+        margin-bottom: 20px;
+        width: 500px; /* Increased width for a larger box */
+    }
+
+    .content-box img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 style="display: inline;">Wiki List</h1>
+            <br> <br>
+            <span>
+                {% if user.is_authenticated %}
+                    <form method="get" action="{% url 'wiki:article_add' %}">
+                        <button type="submit" class="btn btn-dark"><h4>Create Article</h4></button>
+                    </form>
+                    <br>
+                {% endif %}
+            </span>
+            <section class="content">
+                {% for article in object_list %}
+                    <div class="content-box">
+                        {% if article.author.user == request.user %}
+                            <strong>[Your Article]</strong> <br><br>
+                        {% endif %}
+                        <a href="{{ article.get_absolute_url }}"><strong>{{ article.title }}</strong></a>
+                        <strong>[{{ article.articlecategory }}]</strong>
+                    </div>
+                {% endfor %}
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}

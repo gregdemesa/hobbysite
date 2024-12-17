@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block title%} Commission Details{% endblock %}
+{% block styles %}
+<style>
+    /* Custom styles */
+    main{
+        margin-left: 0px;
+    }
+    .commission-details {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        margin-left: 150px;
+    }
+    .job-item {
+        margin-bottom: 10px;
+    }
+
+    .colored-box {
+        background-color: #333 ;
+        border-radius: 10px; 
+        padding: 20px;
+        border: 1px solid #ced4da; 
+        color: antiquewhite;
+    }
+
+    .btn-color{
+        background-color: antiquewhite;
+        color: #333;
+    }
+
+    .btn-color:hover{
+        background-color:antiquewhite;
+        color: #333;
+        border-color: black; 
+    }
+    main a:link{
+        color: #333;
+    }
+    main a:visited{
+        color: #333;
+    }
+
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="commission-details colored-box">
+                <h1>{{ commission.title }}</h1>
+                <p>Description: {{ commission.description }}</p>
+                <p>Total Manpower Required: {{ total_manpower_required }}</p>
+                <h2>Jobs</h2>
+                <ul class="list-unstyled">
+                    {% for job in jobs %}
+                        <li class="job-item">
+                            <strong>{{ job.role }}</strong> - Manpower Required: {{ remaining_manpower }}
+                            {% if can_apply|get_item:job.pk %}
+                                <form method="post" action="{% url 'commissions:commission' pk=job.commission.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="job_id" value="{{ job.pk }}">
+                                    <button type="submit" class="btn btn-primary btn-color">Apply to Job</button>
+                                </form>
+                            {% else %}
+                                <button class="btn btn-primary btn-color" disabled>Apply to Job</button>
+                                {% if total_signees >= total_manpower_required %}
+                                    <p>This job is currently full.</p>
+                                {% endif %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if is_owner %}
+                    <a href="{% url 'commissions:commission_edit' commission.pk %}" class="btn btn-secondary btn-color">Edit Commission</a>
+                {% endif %}
+                <a href="/commissions/list/" class="btn btn-secondary btn-color">Back to Commissions List</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

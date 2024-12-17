@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Commission List{% endblock %}
+{% block styles %}
+<style>
+    .content-box {
+        background-color: antiquewhite;
+        border:1px solid #000000;
+        border-radius: 5px;
+        padding: 10px;
+        width: 400px;
+        height: 200px;
+        box-sizing: border-box;
+    }
+    .content {
+        flex-grow: 3;
+    }
+    main {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 20px;  
+        margin-left: 0px;
+    }
+
+    body a{
+        color:#007bff;
+        text-decoration: none;
+    }
+
+    body a.back-link {
+            color: #007bff; /* Blue color */
+            text-decoration: none; /* Remove underline */
+            font-weight: bold; /* Make it bold */
+        }
+
+    body a:hover {
+            color: #0056b3; /* Darker blue on hover */
+    }
+
+    .add-button {
+        background-color: #333;
+        border: none;
+    }
+
+    .card {
+        background-color: #333;
+        color: #333;
+    }
+
+    h2 {
+        color: #333;
+    }
+
+    
+
+
+</style>
+{% endblock %}
+{% block content %}
+<main class="container">
+    <!-- Additional categories for logged-in user -->
+    <div class="row">
+    {% if user.is_authenticated %}
+        <div class="col-md-4">
+            <h2 class="fw-bold mb-2">My Commissions</h2>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    {% for commission in my_posted_commissions %}
+                    <li class="list-group-item mb-1">{{ commission.title }} - {{ commission.status }} - {{ commission.created_on }} <a href="{{ commission.get_absolute_url }}">View</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h2 class="fw-bold mb-2"> Applied Commissions</h2>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    {% for commission in my_applied_commissions %}
+                    <li class="list-group-item mb-1">{{ commission.title }} - {{ commission.status }} - {{ commission.created_on }} <a href="{{ commission.get_absolute_url }}">View</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+        <div class="col-md-4">
+            <h2 class="fw-bold mb-2"> All Commissions</h2>
+            <div class="card">
+                <ul class="list-group list-group-flush">
+                    {% for commission in all_commissions %}
+                    <li class="list-group-item mb-1">{{ commission.title }} - {{ commission.status }} - {{ commission.created_on }}<a href="{{ commission.get_absolute_url }}">View</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-10">
+            <form method ="post" action="/commissions/add/">
+                {% csrf_token%}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary add-button">Add New Commissions</button>
+              </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title%} Wiki Details{% endblock %}
+{% block styles %}
+<style>
+    .content-box {
+        background-color: antiquewhite;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        padding: 20px; /* Increased padding for more space */
+        margin-bottom: 20px;
+        width: 500px; /* Increased width for a larger box */
+    }
+
+    .content-box img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <a href="{% url 'wiki:articles' %}" class="btn btn-dark mb-3">Back to Wiki Articles List</a>
+            <section class="content">
+                <h2>Wiki Details</h2>
+                <div class="content-box">
+                    <ul>
+                        <li><strong>Title:</strong> {{ article.title }}</li>
+                        {% if article.image %}
+                            <img src="{{ article.image.url }}" alt="{{ article.title }}">
+                        {% endif %}
+                        <li><strong>Entry:</strong> {{ article.entry }}</li>
+                        <li><strong>Category:</strong> {{ article.articlecategory }}</li>
+                        <li><strong>Created On:</strong> {{ article.created_on }}</li>
+                        <li><strong>Updated On:</strong> {{ article.updated_on }}</li>
+                    </ul>
+                </div>
+
+                {% if user.is_authenticated %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-dark">Add Comment</button>
+                    </form>
+                {% endif %}
+                <br>
+
+                <h5>Comments</h5> 
+                {% for comment in article.comment_set.all %}
+                    <p>[{{comment.created_on}}] {{ comment.author.display_name }} wrote: {{ comment.entry }}</p>
+                {% endfor %}
+
+                <h6>Articles in the same category as "{{ article.articlecategory }}"</h6>
+                <ul>
+                    {% for related_article in article.articlecategory.article_set.all %}
+                        {% if related_article.pk != article.pk %}
+                            <li><a href="{{ related_article.get_absolute_url }}">{{ related_article.title }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+
+                {% if user.is_authenticated and article.author == user.profile %}
+                    <form method="GET" action="{% url 'wiki:article_update' pk=article.pk %}">
+                        <button type="submit" class="btn btn-dark">Edit Article</button>
+                    </form>
+                {% endif %}
+
+                <br>
+                <br>
+
+                <form method="GET" action="{% url 'wiki:article_gallery' %}">
+                    <button type="submit" class="btn btn-dark">View Image Gallery</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

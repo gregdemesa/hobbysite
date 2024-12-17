@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Merchstore{% endblock %}
+{% block display %}Update Product{% endblock %}
+{% block content %}
+<style>
+    main a:link {
+        color:#333;
+        text-decoration:none;
+        }
+    main a:visited {
+        color:white;
+        text-decoration:none;
+        }
+    .box {
+        background-color: black;;
+        border-radius: 10px;
+        color: #fff;
+        margin-top: 5px;
+        width: 500px;
+        height: 550px;
+        padding-top: 20px;
+        padding-left: 50px;
+        text-align: left;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+    }
+    .button {
+        background-color: black; 
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-left: 300px;
+        margin-top: 50px;
+    }
+    .button:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
+    .return {
+        background-color: black; 
+        border-color: black; 
+        border-style: solid;
+        border-radius: 10px;
+        color: white;
+        padding: 3px 3px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .return:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
+</style>
+<a class="return" href=/merchstore/items>Return to Products List</a>
+<form class="box" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="button">Update</button>
+</form>
+{% endblock %}

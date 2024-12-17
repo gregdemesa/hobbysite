@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <h1>Blog</h1>
+{% endblock title %}
+{% block styles %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style>
+.content-box {
+    border:1px solid #000000;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 20px 0;
+    width: 500px;
+    height: 120px;
+    box-sizing: border-box;
+}
+
+.article {
+    padding: 14px 25px;
+    text-align: center;
+    display: inline-block;
+    border:5px solid #000000;
+    background-color: #E8DFCA;
+    color: #000000; 
+    border:2px solid #000000;
+    border-radius: 5px;
+}
+.button {
+    background-color: #E8DFCA;
+    color: #000000; 
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    }
+.button:hover {
+    background-color:#000000;
+    color: #E8DFCA;
+    border-color: black; 
+    }
+
+.button {
+    border:2px solid #000000;
+    border-radius: 5px;
+}
+
+.form {
+    padding: 14px 25px;
+    text-align: center;
+    display: inline-block;
+    border:5px solid #000000;
+    background-color: #E8DFCA;
+    color: #000000; 
+    border:2px solid #000000;
+    border-radius: 5px;
+}
+
+.content {
+    flex-grow: 3;
+    }
+
+p{
+
+    font-size: 15px; 
+    color: #000000;
+}
+strong{
+    font-weight: bold;
+    font-size: large; 
+    color: #000000;
+}
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h1  class="fw-bold mb-2 text-uppercase">Blog List</h1>
+
+<span>
+    {% if user.is_authenticated %}
+        <form method="get" action="{% url 'blog:blog_create' %}">
+            <button type="submit" class="button"><h4>Create Article</h4></button>
+        </form>
+
+    {% endif %}
+</span>
+
+{% for article in object_list %}
+    {% if article.author.user == request.user %}
+        <div class="content-box" style="background-color: #E8DFCA;color: #000000; border:2px solid #000000;border-radius: 5px;">
+            <strong>Owned:</strong> 
+            <br><br>
+            <a href="{{ article.get_absolute_url }}"><button class="button">
+            {{ article.title }}
+            [{{ article.category }}]</button></a>
+        </div>
+    {% else %}
+        <div class="content-box" style="background-color: #E8DFCA;color: #000000; border:2px solid #000000;border-radius: 5px;">
+            <br>
+            <a href="{{ article.get_absolute_url }}">
+                <button class="button">
+                {{ article.title }}
+                ({{ article.category }})</button></a>
+        </div>
+    {% endif %}
+{% endfor %}
+
+
+
+{% endblock %}

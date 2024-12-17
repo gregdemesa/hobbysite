@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    {{ product.name }}
+{% endblock title %}
+{% block styles %}
+<style>
+    main{
+        margin-left: 500px;
+    }
+    main a:link {
+        color:#333;
+        text-decoration:none;
+        }
+    main a:visited {
+        color:white;
+        text-decoration:none;
+        }
+    .button {
+        background-color: black; 
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .button:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
+    .disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .return {
+        background-color: black; 
+        border-color: black; 
+        border-style: solid;
+        border-radius: 10px;
+        color: white;
+        padding: 3px 3px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .return:hover {
+        background-color:white;
+        color: black;
+        border-color: black; 
+    }
+    .box {
+        background-color: black;
+        border-radius: 10px;
+        color: #fff;
+        margin-top: 180px;
+        width: 500px;
+        height: 130px;
+        padding-top: 1px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+    }
+    .description {
+        width: 500px;
+        word-wrap: break-word;
+    }
+    .headbar {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 200px;
+        text-align: center;
+        font-family:Verdana, sans-serif;
+        word-wrap: break-word;
+     }
+</style>
+{% endblock styles%}
+{% block content %}
+    <a class="return" href=/merchstore/items>Return to Products List</a>
+    <div class ="box" >
+        <h1 class="fw-bold mb-2 text-uppercase">{{ product.name }}</h1>
+        <p>Php {{ product.price }}</p>
+        <p>Php {{ product.status }}</p>
+        <p>Php {{ product.stock }}</p>
+    </div>
+    <div class="description">
+        <p><b>About the product:</b></p>
+        <p>{{ product.description }}</p>
+    {% if user.is_authenticated %}
+        {% if product.author != request.user.profile %}
+            <form method="post">
+                {% csrf_token %} {{ form.as_p }}
+                {% if sold_out %}
+                    <button class="button disabled" type="submit" disabled>Buy Now</button>
+                {% else %}
+                    <button class="button" type="submit">Buy Now</button>
+            {% endif %}
+            </form>
+        {% else %}
+            <a href="{%url 'merchstore:product_update' product.pk%}"><button class="button" type="submit">Update Product</button></a>
+        {% endif %}
+    {% else %}
+        <form method="post">
+            {% csrf_token %} {{ form.as_p }}
+            {% if sold_out %}
+                <button class="button" type="submit" disabled>Buy Now</button>
+            {% else %}
+                <button class="button" type="submit">Buy Now</button>
+            {% endif %}
+        </form>
+    {% endif %}
+    </div>
+{% endblock content %}
